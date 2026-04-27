@@ -216,3 +216,9 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Environment variables - NEVER commit these
+.env
+.env.local
+.env.example
+*.env
