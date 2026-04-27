@@ -1,0 +1,81 @@
+version: 2
+
+models:
+  - name: stg_orders
+    description: "Cleaned, deduplicated order records from Kafka ingestion"
+    columns:
+      - name: order_id
+        description: "Unique order identifier"
+        tests: [unique, not_null]
+      - name: customer_id
+        tests: [not_null]
+      - name: amount
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+      - name: status
+        tests:
+          - accepted_values:
+              values: ['PLACED','PROCESSING','SHIPPED','DELIVERED','CANCELLED','RETURNED','UNKNOWN']
+      - name: region
+        tests: [not_null]
+
+  - name: stg_clickstream
+    description: "Cleaned clickstream session events"
+    columns:
+      - name: session_id
+        tests: [unique, not_null]
+      - name: user_id
+        tests: [not_null]
+      - name: duration_ms
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+  - name: stg_inventory
+    description: "Cleaned inventory stock events"
+    columns:
+      - name: sku
+        tests: [not_null]
+      - name: stock_level
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+  - name: stg_stream_profiles
+    description: "Stream statistical profiles — ML anomaly model input"
+    columns:
+      - name: profile_id
+        tests: [unique, not_null]
+      - name: record_count
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+  - name: stg_anomaly_log
+    description: "ML-scored anomaly records"
+    columns:
+      - name: anomaly_id
+        tests: [unique, not_null]
+      - name: severity
+        tests:
+          - accepted_values:
+              values: ['NORMAL','MEDIUM','HIGH','CRITICAL']
+
+  - name: mart_pipeline_health
+    description: "Daily pipeline SLA and health metrics per topic"
+    columns:
+      - name: pipeline_sla_pct
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "BETWEEN 0 AND 100"
+
+  - name: mart_stream_overview
+    description: "Combined daily business + ops summary"
+    columns:
+      - name: total_orders
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"

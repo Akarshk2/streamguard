@@ -1,0 +1,31 @@
+version: 2
+
+sources:
+  - name: streamguard_raw
+    database: "{{ var('streamguard_database') }}"
+    schema: "{{ var('raw_schema') }}"
+    tables:
+      - name: orders_raw
+        description: "Raw orders ingested from Kafka orders_topic via PySpark"
+      - name: clickstream_raw
+        description: "Raw clickstream events ingested from clickstream_topic"
+      - name: inventory_raw
+        description: "Raw inventory events ingested from inventory_topic"
+
+  - name: streamguard_metrics
+    database: "{{ var('streamguard_database') }}"
+    schema: "{{ var('metrics_schema') }}"
+    tables:
+      - name: stream_profiles
+        description: "Statistical profiles per micro-batch. ML anomaly model input."
+
+  - name: streamguard_alerts
+    database: "{{ var('streamguard_database') }}"
+    schema: "{{ var('alerts_schema') }}"
+    tables:
+      - name: anomaly_log
+        description: "ML-scored anomaly alerts from Isolation Forest inference"
+      - name: schema_changes
+        description: "History of auto-applied schema evolutions"
+      - name: quarantine_log
+        description: "Records rejected by schema/business rule validation"

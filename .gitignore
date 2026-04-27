@@ -1,0 +1,49 @@
+# ─── SENSITIVE FILES — NEVER COMMIT ──────────────────────────────────────────
+.env
+.env.local
+*.env
+
+# ─── PYTHON ───────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# ─── VIRTUAL ENVIRONMENT ──────────────────────────────────────────────────────
+venv/
+env/
+ENV/
+.venv/
+
+# ─── ML MODEL ARTIFACTS (too large for GitHub) ────────────────────────────────
+ml/models/*.pkl
+ml/models/*.json
+
+# ─── SPARK ────────────────────────────────────────────────────────────────────
+spark-warehouse/
+checkpoints/
+/tmp/
+
+# ─── LOGS & DATA ──────────────────────────────────────────────────────────────
+*.log
+*.csv
+*.parquet
+
+# ─── IVY / MAVEN CACHE ───────────────────────────────────────────────────────
+.ivy2/
+.m2/
+
+# ─── OS FILES ─────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ─── IDE ──────────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
